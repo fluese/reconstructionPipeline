@@ -8,14 +8,11 @@ function applyBiasCorrection(name, settings)
 
 
 if settings.options.post.biasfield
-    % Check if SPM12 added to the MATLAB path
-    pathCell  = regexp(path, pathsep, 'split');
-    installed = any(endsWith(pathCell,'spm12'));
-    if ~installed
-        fprintf('===============================================================\n');
+    if ~settings.parameters.SPM
+        fprintf('\n===============================================================\n');
         fprintf('| You need to download SPM12 and add it to your Matlab path in \n');
         fprintf('| order to run the bias field correction. \n');
-        fprintf('===============================================================\n\n');
+        fprintf('===============================================================\n');
     else
         if settings.options.post.segmentation
             fprintf('\n===============================================================\n');
@@ -86,6 +83,6 @@ if settings.options.post.biasfield
         else
             fprintf('| Biasfield correction done.\n')
         end
-        fprintf('===============================================================\n\n');
+        fprintf('===============================================================\n');
     end
 end

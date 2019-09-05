@@ -51,7 +51,7 @@ settings.options.output.shortFilename           = false;             % Use short
 
 % Post-processing
 settings.options.post.distortionCorrection      = false;             % Apply 3D distortion correction
-settings.options.post.biasfield                 = false;             % Apply bias field correction of SPM12
+settings.options.post.biasfield                 = true;             % Apply bias field correction of SPM12
 settings.options.post.segmentation              = false;             % Write segmentation of GM, WM, and CSF
 settings.options.post.mask                      = false;             % Create brainmask (requires parameter.segmentation = true)
 settings.options.post.keepSegmentation          = false;             % Keep segmentation or remove it after creation of brainmask

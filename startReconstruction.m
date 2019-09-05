@@ -112,10 +112,10 @@ clear; clc; close all;
 % ************************************************************************
 
 % Get Version number
-versionNumber = '0.991';
+versionNumber = '1.0';
 
 % Use preset settings
-preset.usePreset = false;
+preset.usePreset = true;
 preset.file      = 'default';
 
 % Process data

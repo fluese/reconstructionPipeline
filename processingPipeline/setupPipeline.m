@@ -23,37 +23,39 @@ if preset.usePreset
     fpath = fileparts(mfilename('fullpath'));
     tmp = load([fpath '/presets/' preset.file '.mat']);
 
-    % Compare parameters between both settings and add missing parameters
-    % in preset to still run pipeline properly.
-    f1=fieldnames(settings.parameters);
-    f2=fieldnames(tmp.settings.parameters);
-    f=intersect(f1,f2);
-    tmp=rmfield(settings.parameters, f);
-    params=fieldnames(tmp);
-    for i=1:length(params)
-	    value = getfield(settings.parameters, params{i});
-	    tmp.settings.parameters.(params{i}) = value;
+    if ~strcmp(versionNumber,tmp.settings.versionNumber)
+        fprintf('| WARNING: Version number mismatch between reconstruction pipeline and preset.\n')
+        fprintf('| WARNING: Will use missing parameters and options from setParameters and setOptions.\n')
+        % Compare parameters between both settings and add missing parameters
+        % in preset to still run pipeline properly.
+        f1=fieldnames(settings.parameters);
+        f2=fieldnames(tmp.settings.parameters);
+        f=intersect(f1,f2);
+        tmp2=rmfield(settings.parameters, f);
+        params=fieldnames(tmp2);
+        if ~isempty(params)
+            for i=1:length(params)
+                value = getfield(settings.parameters, params{i});
+                tmp2.settings.parameters.(params{i}) = value;
+            end
+            settings.parameters = tmp2.settings.parameters;
+        end
+
+        % Compare options between both settings and add missing options 
+        % in preset to still run pipeline properly. 
+        f1=fieldnames(settings.options);
+        f2=fieldnames(tmp.settings.options);
+        f=intersect(f1,f2);
+        tmp2=rmfield(settings.options, f);
+        opts=fieldnames(tmp2);
+        if ~isempty(opts)
+            for i=1:length(opts)
+                value = getfield(settings.options, opts{i});
+                tmp2.settings.options.(opts{i}) = value;
+            end
+            settings.options = tmp2.settings.options;
+        end
     end
-    settings.parameters = tmp.settings.parameters;
-
-    % Compare options between both settings and add missing options 
-    % in preset to still run pipeline properly. 
-    f1=fieldnames(settings.options);
-    f2=fieldnames(tmp.settings.options);
-    f=intersect(f1,f2);
-    tmp=rmfield(settings.options, f);
-    opts=fieldnames(tmp);
-    for i=1:length(opts)
-	    value = getfield(settings.options, opts{i});
-	    tmp.settings.options.(opts{i}) = value;
-    end
-    settings.options = tmp.settings.options;
-
-    % Here general information should be compared. Is it a preset which
-    % was created from a previous reconstruction? Do the information
-    % match? Should they?
-
-    % Compare version numbers.
 else
     settings = setOptions;
     settings = setParameters(settings);
@@ -66,7 +68,7 @@ settings.startTime = datestr(datetime('now'));
 % Setup path for writing files to and path of tissue probability map
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 settings.parameters.path      = '/pool/falk/reconstruction/';                  % Set path were data shall be written in.
-settings.parameters.post.path = '/home/luesebri/software/spm12/tpm/TPM.nii';       % Set path to tissue probability model
+settings.parameters.post.path = 'none';               % Set path to tissue probability model
 
 settings.parameters.numFiles  = numFiles;
 name.Filename                 = name.FilenameS{settings.parameters.numFiles,1};
@@ -84,18 +86,10 @@ fprintf('===============================================================\n\n');
 % Parameters for reference NIfTI [Currently needed for correct orientation of output file]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if settings.options.output.refData
-    %[refName, refPath] = uigetfile('*.nii;*.nii.gz', 'Select reference data.','MultiSelect', 'off');
-    %settings.parameters.output.ref_nifti = [refPath '/' refName];
+    [refName, refPath] = uigetfile('*.nii;*.nii.gz', 'Select reference data.','MultiSelect', 'off');
+    settings.parameters.output.ref_nifti = [refPath '/' refName];
     
-    refs      = cell(8,1);
-    refs{1,1} = 'yv98_3512-168_Scanner.nii.gz';
-    refs{2,1} = 'yv98_3555-74_Scanner.nii.gz';
-    refs{3,1} = 'yv98_3555-75_Scanner.nii.gz';
-    refs{4,1} = 'yv98_3589-40_Scanner.nii.gz';
-    refs{5,1} = 'yv98_3637-24_Scanner.nii.gz';
-    refs{6,1} = 'yv98_3637-25_Scanner.nii.gz';
-    refs{7,1} = 'yv98_3681-31_Scanner.nii.gz';
-    refs{8,1} = 'yv98_3681-32_Scanner.nii.gz';
+    % Setup manually in case of -nodisplay
     %refs{1,1} = 'sub-01_ses-01_run-01_T1w_bias.nii.gz';
     %refs{2,1} = 'sub-01_ses-02_run-01_T1w_bias.nii.gz';
     %refs{3,1} = 'sub-01_ses-02_run-02_T1w_bias.nii.gz';
@@ -105,9 +99,8 @@ if settings.options.output.refData
     %refs{7,1} = 'sub-01_ses-05_run-01_T1w_bias.nii.gz';
     %refs{8,1} = 'sub-01_ses-05_run-02_T1w_bias.nii.gz';
 
-    refName = refs{numFiles,1};
-    refPath = '/pool/public/data/250um/';
-    %refPath = '/pool/falk/data/RegistrationFinal/data/';
+    %refName = refs{numFiles,1};
+    %refPath = '/pool/public/data/250um/';
 
     if refName == 0
         fprintf('| No reference file selected. Contiuing without reference.\n')
@@ -188,6 +181,13 @@ settings = decorrelationMatrix(name, settings, twix_obj);
 %     settings.options.force            = true;
 % end
 
+% SPM was not installed
+if strcmp(settings.parameters.post.path,'none')
+    settings.parameters.SPM = false;
+else
+    settings.parameters.SPM = true;
+end
+
 % In case proc memory is set to false, so should be the saveIntermediate option.
 if ~settings.options.procMemory
 	settings.options.saveIntermediate = false;
@@ -219,5 +219,4 @@ name = setName(name, settings, preset);
 % Display options
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 displaySettings(name, settings, preset);
-
 

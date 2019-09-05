@@ -75,10 +75,9 @@ end
 if settings.options.noCombine
 	fprintf('| Channels will not be combined.\n');
 elseif strcmp(settings.options.xspace.combineChannels, 'adaptComb')
-	if settings.parameters.xspace.combineType == 'byChunk'
+	if strcmp(settings.parameters.xspace.combineType,'byChunk')
 	        fprintf('| Channels are combined by adaptive combine with a block size of %ix%ix%i.\n', settings.parameters.xspace.blockSize);
     else
-        
 		fprintf('| Channels are combined by adaptive combine per slice with a block size of %ix%i.\n', settings.parameters.xspace.blockSize);
 	end
 elseif strcmp(settings.options.xspace.combineChannels, 'SoS')
@@ -173,14 +172,20 @@ if settings.options.kspace.partialFourier
     end
 end
 
+fprintf('| \n');
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bias field correction (and segmentation)?
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if settings.options.post.biasfield
-    if settings.options.post.segmentation
-        fprintf('| Bias field correction and segmentation will be conducted.\n')
+    if ~settings.parameters.SPM
+        fprintf('| SPM is not installed or TPM path is not setup properly. Will not run inhomogeneity correction.\n');
     else
-        fprintf('| Bias field correction will be conducted.\n')
+        if settings.options.post.segmentation
+            fprintf('| Bias field correction and segmentation will be conducted.\n')
+        else
+            fprintf('| Bias field correction will be conducted.\n')
+        end
     end
 end
 
