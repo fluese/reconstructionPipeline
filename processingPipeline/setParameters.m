@@ -20,12 +20,15 @@ settings.parameters.scalefac                   = 1000;
 % Parameter for reconstruction
 settings.parameters.kspace.scalefac 	       = 1/1e-11; 							% Scaling factor for phase unwrapping (and potentiatlly denosing)
 settings.parameters.kspace.decorrelateChannels = 'noiseScan';                       % Type of decorrelation method. ('noiseScan' = based on separately acquired noise data, 'noiseData' = based on noise data within raw data file)
-settings.parameters.kspace.tukey               = 0.05;                               % Taper length of Tukey filter for k space filtering (between 0 and 1 with 0: Rect window, 1: Hanning window)
+settings.parameters.kspace.tukey               = 0.2;                               % Taper length of Tukey filter for k space filtering (between 0 and 1 with 0: Rect window, 1: Hanning window)
 settings.parameters.kspace.partialFourier      = 'zero';                            % Apply partial Fourier reconstruction. ('zero' = zero filling, 'pocs' = POCS, 'homo' = homodyne, 'conj' = conjugate synthesize.)
 
 % Parameters for channel combination
+settings.parameters.xspace.combineType         = 'bySlice';                         % Combine channels in in 2D ('bySlice') or 3D ('byChunk') for adaptive combine
 settings.parameters.xspace.blockSize           = [4 4 4];                           % Block size for adaptive combine
-settings.parameters.xspace.combineType         = 'byChunk';                         % Combine channels in in 2D ('bySlice') or 3D ('byChunk') for adaptive combine
+if strcmp(settings.parameters.xspace.combineType,'bySlice')
+    settings.parameters.xspace.blockSize = settings.parameters.xspace.blockSize(1,1:2);
+end
 
 % Parameters for bias field correction:
 % See 'bias_correction.m' for in-depth explantion of settings.parameters.

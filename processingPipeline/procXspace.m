@@ -86,12 +86,15 @@ if ~settings.parameters.imspace.processed
             imspace=combineChannels(name, settings, 1, xspace);
         else
             for Chunk=1:settings.parameters.nChunks
-                if Chunk*settings.parameters.stepSize > settings.parameters.nSlc
+                if ((Chunk-1)*settings.parameters.stepSize)+1 > settings.parameters.nSlc
+                    break;
+                elseif Chunk*settings.parameters.stepSize > settings.parameters.nSlc
                     disp(['| Processing slices ' num2str(((Chunk-1)*settings.parameters.stepSize)+1) ' to ' num2str(settings.parameters.nSlc)]);
+                    combineChannels(name, settings, Chunk);
                 else
                     disp(['| Processing slices ' num2str(((Chunk-1)*settings.parameters.stepSize)+1) ' to ' num2str(Chunk*settings.parameters.stepSize)]);
+                    combineChannels(name, settings, Chunk);
                 end
-                combineChannels(name, settings, Chunk);
             end
             imspace = 0;
         end

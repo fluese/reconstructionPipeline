@@ -77,8 +77,9 @@ if settings.options.noCombine
 elseif strcmp(settings.options.xspace.combineChannels, 'adaptComb')
 	if settings.parameters.xspace.combineType == 'byChunk'
 	        fprintf('| Channels are combined by adaptive combine with a block size of %ix%ix%i.\n', settings.parameters.xspace.blockSize);
-	else
-		fprintf('| Channels are combined by adaptive combine per slice with a block size of %ix%i.\n', settings.parameters.xspace.blocksize);
+    else
+        
+		fprintf('| Channels are combined by adaptive combine per slice with a block size of %ix%i.\n', settings.parameters.xspace.blockSize);
 	end
 elseif strcmp(settings.options.xspace.combineChannels, 'SoS')
     fprintf('| Channels are combined by sum of squares.\n');

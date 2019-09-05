@@ -274,6 +274,10 @@ elseif strcmp(type, 'combine')
 	    settings.parameters.estimatedSliceMem = 2 * sliceMem * (settings.parameters.combineWorkers * (settings.parameters.stepSize));
         end
 
+        if settings.parameters.combineWorkers > settings.parameters.nSlc
+            settings.parameters.combineWorkers = settings.parameters.nSlc;
+        end
+        
         poolobj = gcp('nocreate');
         if isempty(poolobj)
             fprintf('| Starting parallel pool.\n');

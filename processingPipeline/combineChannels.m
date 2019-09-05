@@ -17,30 +17,32 @@ else
     removedEntries = 0;
 end
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Channel combination
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if strcmp(settings.options.xspace.combineChannels, 'adaptComb')
-    % Adaptive combine
-    if ~settings.options.procMemory
-        xspace=loadData(name, settings, Index, Chunk, 'adaptComb');
+if ~isempty(Index)
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Channel combination
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    if strcmp(settings.options.xspace.combineChannels, 'adaptComb')
+        % Adaptive combine
+        if ~settings.options.procMemory
+            xspace=loadData(name, settings, Index, Chunk, 'adaptComb');
+        end
+        imspace = adaptiveCombine(settings, xspace);
+    elseif strcmp(settings.options.xspace.combineChannels, 'SoS')
+        % Root Sum of squares
+        if ~settings.options.procMemory
+            xspace=loadData(name, settings, Index, Chunk, 'SoS', removedEntries);
+        end
+        xspace  = permute(xspace,[2 3 4 1]);
+        imspace = squeeze(sum(abs(xspace.^2),4)).^(1/2);
     end
-    imspace = adaptiveCombine(settings, xspace);
-elseif strcmp(settings.options.xspace.combineChannels, 'SoS')
-    % Root Sum of squares
-    if ~settings.options.procMemory
-        xspace=loadData(name, settings, Index, Chunk, 'SoS', removedEntries);
-    end
-    xspace  = permute(xspace,[2 3 4 1]);
-    imspace = squeeze(sum(abs(xspace.^2),4)).^(1/2);
-end
 
-if settings.options.saveIntermediate && settings.options.procMemory
-    saveData(name, settings, imspace, Index, Chunk, 'imspace', removedEntries)
-elseif ~settings.options.procMemory
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Save data
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    saveData(name, settings, imspace, Index, Chunk, 'imspace', removedEntries)
-    imspace=0;
+    if settings.options.saveIntermediate && settings.options.procMemory
+        saveData(name, settings, imspace, Index, Chunk, 'imspace', removedEntries)
+    elseif ~settings.options.procMemory
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Save data
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        saveData(name, settings, imspace, Index, Chunk, 'imspace', removedEntries)
+        imspace=0;
+    end
 end
