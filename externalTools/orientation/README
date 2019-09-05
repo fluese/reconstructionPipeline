@@ -1,0 +1,8 @@
+The files in this folder
+
+vox2ras_dfmeas.m
+vox2ras_ksolve.m
+vox2ras_rsolve.m
+vox2ras_rsolveAA.m
+
+originate from FreeSurfer v6 available through: https://surfer.nmr.mgh.harvard.edu/

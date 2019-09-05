@@ -1,0 +1,130 @@
+% Change log from v0.99 to v0.991
+% [*] Removed the slice offset in adaptive combine. It was used to make
+%	  sure that no border effects occur in calculation of the weighting
+%	  factors. However, this is actually not necessary as no border
+%	  effects occur.
+%     The offset flag should be removed in the next release entirely.
+% [*] Added free and estimated memory to 'initializeParallel.m' to be
+%     displayed.
+% [*] Added 'shortFilename' flag in setOptions to shorten the
+%     filename to the unambigous minimum discarding all names given by
+%     the parameters.
+% [*] Many undocumented changes...
+% [*] Many minor bug fixes.
+
+% Change log from v0.98 to v0.99
+% [*] Implementated GRAPPA reconstruction using Michael Lustig's code.
+% [*] Changed the way the amount of slices and chunks is estimated for
+%     autoSetup.
+% [*] Renamed number of workers and split the sliceWorkers (now it's
+%     preproc, proc and combineWorkers).
+% [*] Added an option to change the maximum number of potential CPUs.
+% [*] Changes made to displaySettings in case of denoising with BM4D.
+% [*] Changes made to displaySettings to indicate where and how files
+%     are written to disk.
+% [*] Changed channel combintion from being a parameter to an option.
+% [*] Changed denoising filter type from being a parameter to an option.
+% [*] Implemented wavelet denoising from André Pampel (MPI Leipzig,
+%     Germany).
+% [*] Implemented 3D phase correction from André Pampel (MPI Leipzig,
+%     Germany).
+% [*] Renamed function 'initializeParallel' to 'initializeProcess'.
+% [*] Added a few sanity checks in setupPipeline and initializeProcess.
+% [*] Made a few changes to setup variables correctly.
+% [*] Many minor bug fixes.
+%
+% Change log from v0.97 to v0.98
+% [*] Added function 'procRawdata.m' to conduct phase unwrapping of
+%     uncombined data.
+% [*] Added option to write phase data in 'writeNIfTI.m'.
+% [*] Fixed a bug in 'getMaxChannel.m' if processed without
+%     parallelization.
+% [*] Added folder 'processingPipeline' for cleaner look.
+% [*] Separated pre-processing and processing of raw k-space into two
+%     functions called 'preprocRawdata.m' and 'procRawdata.m'.
+% [*] Added functionality to process data without writing intermediate
+%     results to disk for faster processing. -> procMemory in
+%     'setOptions.m'
+% [*] Added function 'initializeParallel.m'.
+% [*] Removing several outputs in 'displaySettings.m' regarding parallel
+%	  processing.
+% [*] Changed output of progress to a simple progress bar.
+% [*] Added output of image information.
+% [*] Minor bug fixes.
+%
+% Change log from v0.96 to v0.97
+% [*] Minor changes in 'setupPipeline.m' regarding reference data.
+% [*] Minor changes in 'statusData.m' regarding writing NIfTI files.
+% [*] Minor changes in 'writeNIfTI.m'.
+% [*] Re-implemented distortion correction. Needs a reference images to 
+%     run appropriately as the image's origin is still not set correctly.
+% [*] Fixed minor issues in 'applyBiasCorrection.m' and sub-functions.
+% [*] Corrected estimation of used memory during processing.
+% [*] When option to use reference file is used, a window to select the
+%     file will pop up during 'setupPipeline.m'
+% [*] Added 'getStarted.m' function to make 'startReconstruction.m'
+%     cleaner.
+%
+% Change log from v0.95 to v0.96
+% [*] Saving a mat-File in reconstruction folder containing the settings,
+%     which can also be used as a preset to run exact same pipeline again.
+% [*] Added function to clean up at end of pipeline. During clean up the
+%     parallel pool is closed and all intermediately written files may be
+%     removed.
+% [*] Added option to remove all intermediately written files at the end of
+%     the pipeline.
+% [*] Added function 'createPreset.m' to create preset.
+% [*] Added presets of settings (and made according changes thoughout the
+%     script). To use a preset specify its name at the beginning of 
+%     'startReconstruction.m'.
+% [*] Fixed a bug in the naming scheme.
+% [*] Changed settings to settings.options.
+% [*] Added option to automatically set number of workers, chunks, and
+%     slices according to available memory and number of physical CPUs.
+% 
+% Change log from v0.94 to v0.95
+% [*] Added if statement in 'setupPipeline.m' to automatically change
+%     settings in case of partial Fourier or if partial Fourier was falsely
+%     selected for non partial Fourier data.
+% [*] Added logical statement in 'extractRawdata.m' to avoid multying
+%     everything with 0 in case decorrelation was set to true without
+%     having noise data.
+% [*] Removed option to remove readout oversampling after pre-processing
+% [*] Fixed a bug in 'loadData.m' > 'adaptComb' related to indexing.
+% [*] Fixed a bug in 'applyDenoising.m' which resulted in Fourier
+%     transformation along one direction only, instead of in 3D.
+% [*] Added more comments
+% 
+% Change log from v0.93 to v0.94
+% [*] Fixed a bug if number of workers times stepSize would be greater than
+%     nSlc
+% [*] Fixed a bug preventing processing with a single CPU
+% [*] Implemented use of denoising algorithms by Coupé et al.
+% [*] Minor changes.
+% 
+% Change log from v0.92 to v0.93
+% [*] Added path to twix_obj, now allowing to load data from different
+%     folders.
+% [*] Changes made in 'installReconstructionPipeline.m' as folders were
+%     missing and the folder of the tissue probability map of SPM was set
+%     up falsely.
+% [*] Folder to save data has to be specified in
+%     'installReconstructionPipeline.m'
+% [*] Added a parameter to save files in a user specified folder. (Default:
+%     home/user/data/MRI/)
+% [*] Changed loading of noise data for decorrelation according to 
+% [*] Changed parameters.nSlc to parameters.pSlc in 'statusData.m' > 
+%     'kspace'
+% 
+% Change log from v0.91 to v0.92
+% [*] Changed extraction of twix_obj as some fields are not always filled
+%     to be set as parameters (e.g., number of channels, slices, etc)
+% [*] Changed variables in 'setupPipeline.m' for partial Fourier 
+%     reconstruction accordingly
+% [*] Changed variables in 'loadData.m' > 'kspace_decor' from parameters.n*
+%     to parameters.p*
+% [*] Changed variables in 'applyTukeyfilter.m' from parameters.n* to
+%     parameters.p*
+% [*] Added parameters struct in 'partialReconstruction.m' to get the
+%     index correctly.
+% [*] Renamed 'decorrelateChannels.m' to 'extractRawdata.m'
