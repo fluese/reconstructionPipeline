@@ -174,9 +174,16 @@ elseif strcmp(type, 'proc')
                     if settings.parameters.procWorkers <= feature('numcores') && settings.parameters.procWorkers <= settings.parameters.maxCPUs 
                         settings.parameters.procWorkers = settings.parameters.procWorkers;
                         if settings.options.kspace.denoise
-                            settings.parameters.estimatedChannelMem = (channelMem * settings.parameters.procWorkers * 6);
+				if strcmp(settings.options.kspace.filter, 'BM4D')
+                            		settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 6;
+				elseif strcmp(settings.option.kspace.filter, 'Net')
+					settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 2;
+				else
+					% Just some value, not measured or based on observation
+					settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 4;
+				end
 			else
-                            settings.parameters.estimatedChannelMem = (channelMem * settings.parameters.procWorkers * 2);
+                            settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 2;
                         end
                         if settings.parameters.availableMem > settings.parameters.estimatedChannelMem
                             break;
@@ -186,9 +193,16 @@ elseif strcmp(type, 'proc')
             end
 	else
 		if settings.options.kspace.denoise
-			settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 2;
+			if strcmp(settings.options.kspace.filter, 'BM4D')
+				settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 6;
+			elseif strcmp(settings.options.kspace.filter, 'Net')
+				settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 2;
+			else
+				% Just some value, not measured or based on observation
+				settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 4;
+			end
 		else
-			settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 6;
+			settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 2;
 		end
         end
 
