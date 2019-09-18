@@ -177,7 +177,7 @@ elseif strcmp(type, 'proc')
 				if strcmp(settings.options.kspace.filter, 'BM4D')
                             		settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 6;
 				elseif strcmp(settings.option.kspace.filter, 'Net')
-					settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 2;
+					settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 1.5;
 				else
 					% Just some value, not measured or based on observation
 					settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 4;
@@ -196,7 +196,7 @@ elseif strcmp(type, 'proc')
 			if strcmp(settings.options.kspace.filter, 'BM4D')
 				settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 6;
 			elseif strcmp(settings.options.kspace.filter, 'Net')
-				settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 2;
+				settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 1.5;
 			else
 				% Just some value, not measured or based on observation
 				settings.parameters.estimatedChannelMem = channelMem * settings.parameters.procWorkers * 4;
