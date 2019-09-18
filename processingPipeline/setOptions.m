@@ -33,9 +33,9 @@ settings.options.kspace.acquisitionWeighting    = false;             % Multiply 
 % settings.options.kspace.interpolate             = false;           % Interpolate k-space data (not implemented yet)
 
 % How to combine channels from x space into image space
-settings.options.xspace.combineChannels         = 'adaptComb';       % Type of channel combination. ('SoS' = Sum of squares, 'adaptComb' = Adaptive combine.) 
+settings.options.xspace.combineChannels         = 'SoS';       % Type of channel combination. ('SoS' = Sum of squares, 'adaptComb' = Adaptive combine.) 
 settings.options.xspace.coilCompression         = false;             % Use coil compression in adaptive combine (potentially makes sense to implement much ealier to speed up reconstruction).
-settings.options.xspace.getMaxChannel           = true;              % Load entire dataset and retrieve the channel with the highest intensity for phase correction in adaptive combine.
+settings.options.xspace.getMaxChannel           = false;              % Load entire dataset and retrieve the channel with the highest intensity for phase correction in adaptive combine.
 
 % Writing of output
 settings.options.output.writeNIfTI              = true;              % Write magnitude NIfTI (has to be set to true, for all other files to be written)
