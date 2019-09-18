@@ -25,22 +25,22 @@ spath = uigetdir(userdir,'Select folder were spm is located at.');
 A = regexp(fileread('./processingPipeline/setupPipeline.m'), '\n', 'split');
 if ispc
     tmpLocation = ['settings.parameters.path      = ''' fpath '\'';                  % Set path were data shall be written in.'];
-    A{68} = sprintf('%s', tmpLocation);
+    A{70} = sprintf('%s', tmpLocation);
     if spath == 0
         tmpLocation = 'settings.parameters.post.path = ''none'';               % Set path to tissue probability model';
     else
         tmpLocation = ['settings.parameters.post.path = ''' spath '\tpm\TPM.nii'';       % Set path to tissue probability model'];
     end
-    A{69} = sprintf('%s', tmpLocation);
+    A{71} = sprintf('%s', tmpLocation);
 else
     tmpLocation = ['settings.parameters.path      = ''' fpath '/'';                  % Set path were data shall be written in.'];
-    A{68} = sprintf('%s', tmpLocation);
+    A{70} = sprintf('%s', tmpLocation);
     if spath == 0
         tmpLocation = 'settings.parameters.post.path = ''none'';               % Set path to tissue probability model';
     else
         tmpLocation = ['settings.parameters.post.path = ''' spath '/tpm/TPM.nii'';       % Set path to tissue probability model'];
     end
-    A{69} = sprintf('%s', tmpLocation);
+    A{71} = sprintf('%s', tmpLocation);
 end
 fid = fopen('./processingPipeline/setupPipeline.m', 'w');
 fprintf(fid, '%s\n', A{:});
