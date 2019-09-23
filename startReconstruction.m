@@ -112,7 +112,7 @@ clear; clc; close all;
 % ************************************************************************
 
 % Get Version number
-versionNumber = '1.0';
+versionNumber = '1';
 
 % Use preset settings
 preset.usePreset = true;

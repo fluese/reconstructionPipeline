@@ -55,6 +55,9 @@ if preset.usePreset
             end
             settings.options = tmp2.settings.options;
         end
+    else
+        settings.parameters = tmp.settings.parameters;
+        settings.options    = tmp.settings.options;
     end
 else
     settings = setOptions;
