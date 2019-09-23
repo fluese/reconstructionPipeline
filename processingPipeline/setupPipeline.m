@@ -67,8 +67,8 @@ settings.startTime = datestr(datetime('now'));
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Setup path for writing files to and path of tissue probability map
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-settings.parameters.path      = '/pool/falk/reconstruction/';                  % Set path were data shall be written in.
-settings.parameters.post.path = 'none';               % Set path to tissue probability model
+settings.parameters.path      = 'D:\data\Reconstruction\';                  % Set path were data shall be written in.
+settings.parameters.post.path = 'D:\Software\spm12\tpm\TPM.nii';       % Set path to tissue probability model
 
 settings.parameters.numFiles  = numFiles;
 name.Filename                 = name.FilenameS{settings.parameters.numFiles,1};
@@ -219,4 +219,5 @@ name = setName(name, settings, preset);
 % Display options
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 displaySettings(name, settings, preset);
+
 

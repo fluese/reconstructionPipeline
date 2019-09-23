@@ -54,7 +54,7 @@ if settings.options.post.biasfield
 
             HeaderInfo = spm_vol_nifti([fpath '/c1' fname ext]);
 
-            HeaderInfo.fname = [fpath fname '_brainmask' ext];
+            HeaderInfo.fname = [fpath '/' fname '_brainmask' ext];
             HeaderInfo.private.dat.fname = HeaderInfo.fname;
 
             fprintf('Brain mask created.\n')
@@ -71,7 +71,7 @@ if settings.options.post.biasfield
             gzip([fpath '/' fname ext]); delete([fpath '/' fname ext]);
             gzip([fpath '/' strrep([fname '_fwhm-' num2str(settings.parameters.post.fwhm) '_reg-' num2str(settings.parameters.post.reg) '_samp-' num2str(settings.parameters.post.samp)], '.', '') ext]); delete([fpath '/' strrep([fname '_fwhm-' num2str(settings.parameters.post.fwhm) '_reg-' num2str(settings.parameters.post.reg) '_samp-' num2str(settings.parameters.post.samp)], '.', '') ext]);
             if settings.options.post.mask && settings.options.post.keepSegmentation
-                gzip([fpath '/' fname ext '_brainmask.nii']); delete([fpath '/' fname '_brainmask.nii']);
+                gzip([fpath '/' fname '_brainmask.nii']); delete([fpath '/' fname '_brainmask.nii']);
                 gzip([fpath '/c1' fname ext]); delete([fpath '/c1' fname ext]);
                 gzip([fpath '/c2' fname ext]); delete([fpath '/c2' fname ext]);
                 gzip([fpath '/c3' fname ext]); delete([fpath '/c3' fname ext]);
