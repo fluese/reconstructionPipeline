@@ -33,7 +33,7 @@ if ispc
     end
     A{74} = sprintf('%s', tmpLocation);
 else
-    tmp3ocation = ['settings.parameters.path      = ''' fpath '/'';                  % Set path were data shall be written in.'];
+    tmpLocation = ['settings.parameters.path      = ''' fpath '/'';                  % Set path were data shall be written in.'];
     A{73} = sprintf('%s', tmpLocation);
     if spath == 0
         tmpLocation = 'settings.parameters.post.path = ''none'';               % Set path to tissue probability model';
